@@ -1,6 +1,6 @@
 ---
 title: "Hotel bookings - data wrangling"
-author: "YOU"
+author: "Natalie Frye"
 date: "`r Sys.Date()`"
 output: 
   html_document: 
@@ -46,11 +46,11 @@ from the US (`country` code `"USA"`) and the `lead_time` is less than 1 day.
 **Note:** You will need to set `eval=TRUE` when you have an answer you want to 
 try out.
 
-```{r travel-whim, eval=FALSE}
+```{r travel-whim, eval=TRUE}
 hotels %>%
   filter(
-    country ____ "USA", 
-    lead_time ____ ____
+    country != "USA", 
+    lead_time < 1
     )
 ```
 
@@ -66,10 +66,10 @@ In the following chunk, replace
 **Note:** You will need to set `eval=TRUE` when you have an answer you want to 
 try out.
 
-```{r some-children, eval=FALSE}
+```{r some-children, eval=TRUE}
 hotels %>%
   filter(
-    children [AT LEAST] 1 [OR] babies [AT LEAST] 1
+    children >= 1 | babies >= 1
     )
 ```
 
@@ -81,14 +81,18 @@ number of bookings in resort hotels that have more than 1 child **or** baby
 in the room? Then, do the same for city hotels, and compare the numbers of 
 rows in the resulting filtered data frames.
 
-```{r resort-children}
-# add code here
-# pay attention to correctness and code style
+```{r resort-children, eval=TRUE}
+hotels %>%
+  filter(hotel == "Resort Hotel", 
+    children > 1 | babies > 1
+    )
 ```
 
-```{r city-children}
-# add code here
-# pay attention to correctness and code style
+```{r city-children, eval=TRUE}
+hotels %>%
+  filter(hotel == "City Hotel", 
+    children > 1 | babies > 1
+    )
 ```
 
 ### Exercise 5.
@@ -103,10 +107,11 @@ Your label should be short, informative, and shouldn't include spaces. It also
 shouldn't repeat a previous label, otherwise R Markdown will give you an 
 error about repeated R chunk labels.
 
-```{r label-me-1}
-# add code here
-# pay attention to correctness and code style
+```{r frequency-adults}
+hotels %>%
+  count(adults, sort = TRUE)
 ```
+2 adults is the most common booking. I am rather surprised that there are 403 cases of 0 adults.
 
 ### Exercise 6.
 
@@ -116,9 +121,16 @@ reveal about the surprising results you spotted in the previous exercise?
 
 **Note:** Don't forget to label your R chunk as well (where it says `label-me-2`). 
 
-```{r label-me-2}
-# add code here
-# pay attention to correctness and code style
+```{r frequency-adults-canceled}
+hotels %>%
+  filter(is_canceled == "1") %>%
+  count(adults, sort = TRUE)
+```
+
+```{r frequency-adults-not-canceled}
+hotels %>%
+  filter(is_canceled == "0") %>%
+  count(adults, sort = TRUE)
 ```
 
 ### Exercise 7.
