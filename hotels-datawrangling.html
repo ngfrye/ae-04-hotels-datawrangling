@@ -949,19 +949,44 @@ hotels &lt;- read_csv(&quot;./data/hotels.csv&quot;)</code></pre>
 ## 3      3  4051
 ## 4      0   294
 ## 5      4    46</code></pre>
+<p>About a quarter of the bookings with 0 adults were cancelled, so they were probably accidents.</p>
 </div>
 <div id="exercise-7." class="section level3">
 <h3>Exercise 7.</h3>
 <p>Calculate minimum, mean, median, and maximum average daily rate (<code>adr</code>) grouped by <code>hotel</code> type so that you can get these statistics separately for resort and city hotels. Which type of hotel is higher, on average?</p>
-<pre class="r"><code># add code here
-# pay attention to correctness and code style</code></pre>
+<pre class="r"><code>hotels %&gt;%
+  group_by(hotel) %&gt;%
+  summarize(
+    min_adr = min(adr), 
+    mean_adr = mean(adr),
+    median_adr = median(adr),
+    max_adr = max(adr)
+  )</code></pre>
+<pre><code>## # A tibble: 2 x 5
+##   hotel        min_adr mean_adr median_adr max_adr
+## * &lt;chr&gt;          &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;
+## 1 City Hotel      0       105.        99.9    5400
+## 2 Resort Hotel   -6.38     95.0       75       508</code></pre>
+<p>The city hotels have higher daily rate, on average.</p>
 </div>
 <div id="exercise-8." class="section level3">
 <h3>Exercise 8.</h3>
 <p>We observe two unusual values in the summary statistics above – a negative minimum, and a very high maximum). What types of hotels are these? Locate these observations in the dataset and find out the arrival date (year and month) as well as how many people (adults, children, and babies) stayed in the room. You can investigate the data in the viewer to locate these values, but preferably you should identify them in a reproducible way with some code.</p>
 <p><strong>Hint:</strong> For example, you can <code>filter</code> for the given <code>adr</code> amounts and <code>select</code> the relevant columns.</p>
-<pre class="r"><code># add code here
-# pay attention to correctness and code style</code></pre>
+<pre class="r"><code>hotels %&gt;%
+  filter(adr == -6.38) %&gt;%
+  select(hotel, arrival_date_year, arrival_date_month, adults, children, babies)</code></pre>
+<pre><code>## # A tibble: 1 x 6
+##   hotel        arrival_date_year arrival_date_month adults children babies
+##   &lt;chr&gt;                    &lt;dbl&gt; &lt;chr&gt;               &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;
+## 1 Resort Hotel              2017 March                   2        0      0</code></pre>
+<pre class="r"><code>hotels %&gt;%
+  filter(adr == 5400) %&gt;%
+  select(hotel, arrival_date_year, arrival_date_month, adults, children, babies)</code></pre>
+<pre><code>## # A tibble: 1 x 6
+##   hotel      arrival_date_year arrival_date_month adults children babies
+##   &lt;chr&gt;                  &lt;dbl&gt; &lt;chr&gt;               &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;
+## 1 City Hotel              2016 March                   2        0      0</code></pre>
 </div>
 </div>
 <div id="data-dictionary" class="section level2">

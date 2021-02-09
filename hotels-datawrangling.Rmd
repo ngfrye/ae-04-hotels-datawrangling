@@ -132,6 +132,7 @@ hotels %>%
   filter(is_canceled == "0") %>%
   count(adults, sort = TRUE)
 ```
+About a quarter of the bookings with 0 adults were cancelled, so they were probably accidents. 
 
 ### Exercise 7.
 
@@ -139,10 +140,18 @@ Calculate minimum, mean, median, and maximum average daily rate (`adr`) grouped
 by `hotel` type so that you can get these statistics separately for resort and 
 city hotels. Which type of hotel is higher, on average? 
 
-```{r label-me-3}
-# add code here
-# pay attention to correctness and code style
+```{r hotel-stats}
+hotels %>%
+  group_by(hotel) %>%
+  summarize(
+    min_adr = min(adr), 
+    mean_adr = mean(adr),
+    median_adr = median(adr),
+    max_adr = max(adr)
+  )
 ```
+
+The city hotels have higher daily rate, on average.
 
 ### Exercise 8.
 
@@ -156,11 +165,17 @@ preferably you should identify them in a reproducible way with some code.
 **Hint:** For example, you can `filter` for the given `adr` amounts and 
 `select` the relevant columns.
 
-```{r label-me-4}
-# add code here
-# pay attention to correctness and code style
+```{r investigate-low-adr}
+hotels %>%
+  filter(adr == -6.38) %>%
+  select(hotel, arrival_date_year, arrival_date_month, adults, children, babies)
 ```
 
+```{r investigate-high-adr}
+hotels %>%
+  filter(adr == 5400) %>%
+  select(hotel, arrival_date_year, arrival_date_month, adults, children, babies)
+```
 
 ## Data dictionary
 
